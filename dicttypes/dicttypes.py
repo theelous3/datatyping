@@ -26,7 +26,6 @@ def validate(structure, data):
                     f' They are {[type(item) for item in data[key]]}'
                 )
         elif not isinstance(data[key], value_structure):
-            assert inspect.isclass(value_structure)
             raise TypeError(
                 f'The value for "{key}" is not of type'
                 f' "{value_structure.__name__}".'
