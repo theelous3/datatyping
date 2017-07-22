@@ -11,6 +11,7 @@ def validate(structure, data):
         elif isinstance(value_structure, list):
             # We want the other "elif" not to execute, so we nest the if
             # statements.
+            # TODO: Implement more than just simple types for lists.
             if not isinstance(data[key], list):
                 raise TypeError(
                     f'The value for "{key}" is not of type "list".'
