@@ -5,7 +5,7 @@ This is a messy testing ground, please avert your eyes.'''
 from numbers import Number
 import json
 
-from dicttypes import validate, create_structure
+from datatyping import validate, create_structure
 
 data_structure_1 = {
     "name": str,
@@ -40,4 +40,10 @@ if __name__ == '__main__':
     test_fail()
     test_pass()
 
-a = create_structure({'lol': 'wat', 'stuff': [1, 2, 3]}, strict=True)
+a = create_structure({'lol': 'wat', 'stuff': [1, 2, 3]}, homogeneous=True)
+b = create_structure({'lol': 'wat', 'stuff': [1, "lol", {}]})
+
+from pprint import pprint
+
+pprint(a)
+pprint(b)
