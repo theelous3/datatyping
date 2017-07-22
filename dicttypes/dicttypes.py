@@ -31,25 +31,3 @@ class JsonTemplate:
 def validate_data(structure, test_dict):
     awh_yeah = JsonTemplate(structure)
     awh_yeah(test_dict)
-
-
-def test():
-    from numbers import Number
-    import json
-    data_structure = {"name": str,
-                      "age": int,
-                      "height": float,
-                      "favourite_things": {
-                          "cat": str, "flavour": str, "number": Number
-                           }
-                      }
-    api_results = json.loads('{"name": "frank", "age": 999.2, "height":1.89, "favourite_things": {"cat": "ket", "flavour": "YUM", "number": 8}}')
-    try:
-        validate_data(data_structure, api_results)
-    except Exception as e:
-        raise e
-    else:
-        print("Data OK.")
-
-if __name__ == '__main__':
-    test()
