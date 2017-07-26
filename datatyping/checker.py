@@ -15,13 +15,13 @@ _CONTAINERS = (list, tuple, array, dict)
 def validate(structure, data, homogeneous=False):
     if isinstance(structure, dict):
         for k, v in structure.items():
-            nomnom(structure, data, homogeneous, k, v)
+            _struct_search(structure, data, homogeneous, k, v)
     elif isinstance(structure, (list, tuple, array)):
         for i, v in enumerate(structure):
-            nomnom(structure, data, homogeneous, i, v)
+            _struct_search(structure, data, homogeneous, i, v)
 
 
-def nomnom(structure, data, homogeneous,
+def _struct_search(structure, data, homogeneous,
            lookup, cur_struct):
     # quick check to see we're not looking for missing data.
     # seems stupid but reduces complexity a fair bit
@@ -59,6 +59,8 @@ def nomnom(structure, data, homogeneous,
                     except AssertionError:
                         raise TypeError(f'The types of the items of "{lookup}"'
                                         f' do not match the structure.')
+                    except IndexError:
+                        raise IndexError(f'There are items missing from "{lookup}"')
                 else:
                     validate(value_structure, data[lookup][x], homogeneous)
 

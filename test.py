@@ -1,6 +1,6 @@
 '''Some lil tests.
 
-This is a messy testing ground, please avert your eyes.'''
+This is a messy testing ground, please avert your eyes, it is bad times ahead.'''
 
 from numbers import Number
 import json
@@ -16,7 +16,7 @@ data_structure_1 = {
         "flavour": str,
         "number": Number,
     },
-    "list": [int, str, [[int, [int]]]]
+    "list": [int, int]
 }
 
 #print(data_structure_1)
@@ -35,7 +35,7 @@ def test_pass():
     validate(data_structure_1, api_results)
     print("Two passed.")
 """
-api_results = json.loads('{"name": "frank", "age": 999, "height":1.89, "favourite_things": {"cat": "ket", "flavour": "YUM", "number": 8}, "list": [1, "2", [[2, [7]]]]}')
+api_results = json.loads('{"name": "frank", "age": 999, "height":1.89, "favourite_things": {"cat": "ket", "flavour": "YUM", "number": 8}, "list": [2, 5, "lol"]}')
 
 if __name__ == '__main__':
     #test_fail()
