@@ -22,27 +22,25 @@ def validate(structure, data, homogeneous=False):
 
 
 def _struct_search(structure, data, homogeneous,
-           lookup, cur_struct):
+                   lookup, cur_struct):
     # quick check to see we're not looking for missing data.
     # seems stupid but reduces complexity a fair bit
     try:
         data[lookup]
     except (IndexError, KeyError):
-        raise IndexError(f'Data is missing from item with'
-                         f' signature "{cur_struct}" -> {data}')
+        raise LookupError('Data is missing from item with'
+                          f' signature "{cur_struct}" -> {data}')
 
     if isinstance(cur_struct, dict):
             validate(cur_struct, data[lookup], homogeneous)
 
     elif isinstance(cur_struct, list):
-        if not isinstance(data[lookup], list):
-            raise TypeError(
-                f'The value for index {lookup} is not of type "list".'
-                f' It is "{type(data[lookup]).__name__}"'
-            )
-
         if homogeneous:
-            assert len(cur_struct) == 1
+            try:
+                assert len(cur_struct) == 1
+            except AssertionError:
+                raise ValueError(f'Provided too many items to homogeneous'
+                                 f' structure "{cur_struct}"')
             item_type = cur_struct[0]
             if not all(isinstance(item, item_type) for item in data[lookup]):
                 raise TypeError(
@@ -53,14 +51,16 @@ def _struct_search(structure, data, homogeneous,
 
         else:
             for x, value_structure in enumerate(cur_struct):
+                try:
+                    data[lookup][x]
+                except IndexError:
+                    raise IndexError(f'There are items missing from "{lookup}"')
                 if not isinstance(value_structure, _CONTAINERS):
                     try:
                         assert value_structure == type(data[lookup][x])
                     except AssertionError:
                         raise TypeError(f'The types of the items of "{lookup}"'
-                                        f' do not match the structure.')
-                    except IndexError:
-                        raise IndexError(f'There are items missing from "{lookup}"')
+                                        ' do not match the structure.')
                 else:
                     validate(value_structure, data[lookup][x], homogeneous)
 
