@@ -39,11 +39,11 @@ def _struct_search(structure, data, homogeneous,
             try:
                 assert len(cur_struct) == 1
             except AssertionError:
-                raise ValueError(f'Provided too many items to homogeneous'
-                                 f' structure "{cur_struct}"')
+                raise LookupError(f'Provided too many items to homogeneous'
+                                  f' structure "{cur_struct}"')
             item_type = cur_struct[0]
             if not all(isinstance(item, item_type) for item in data[lookup]):
-                raise TypeError(
+                raise LookupError(
                     f'The types of the items of "{lookup}" are not all '
                     f' "{item_type.__name__}".'
                     f' They are {[type(item) for item in data[lookup]]}'
@@ -59,13 +59,13 @@ def _struct_search(structure, data, homogeneous,
                     try:
                         assert value_structure == type(data[lookup][x])
                     except AssertionError:
-                        raise TypeError(f'The types of the items of "{lookup}"'
-                                        ' do not match the structure.')
+                        raise LookupError(f'The types of the items of "{lookup}"'
+                                          ' do not match the structure.')
                 else:
                     validate(value_structure, data[lookup][x], homogeneous)
 
     elif not isinstance(data[lookup], cur_struct):
-        raise TypeError(
+        raise LookupError(
             f'The value for "{lookup}" is not of type'
             f' "{cur_struct.__name__}".'
             f' It is "{type(data[lookup]).__name__}"'

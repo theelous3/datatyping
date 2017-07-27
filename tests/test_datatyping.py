@@ -11,7 +11,7 @@ def test_basic_dict():
 
 
 def test_basic_dict_fail():
-    with pytest.raises(TypeError):
+    with pytest.raises(LookupError):
         validate({"stuff": int},
                  {"stuff": "string"})
 
@@ -26,18 +26,18 @@ def test_basic_list_homog():
 
 
 def test_basic_list_fail():
-    with pytest.raises(TypeError):
+    with pytest.raises(LookupError):
         validate([int, int, int],
                  [1, 2, "str"])
 
 
 def test_basic_list_homog_fail_struct():
-    with pytest.raises(ValueError):
+    with pytest.raises(LookupError):
         validate([[int, int]], [[1]], homogeneous=True)
 
 
 def test_basic_list_homog_fail_data():
-    with pytest.raises(TypeError):
+    with pytest.raises(LookupError):
         validate([[int]], [[1, "lol", 2]], homogeneous=True)
 
 
@@ -47,7 +47,7 @@ def test_basic_list_items_missing():
 
 
 def test_basic_list_items_missmatch():
-    with pytest.raises(TypeError):
+    with pytest.raises(LookupError):
         validate({"wat": [1, 2, 3]}, {"wat": [1, 2, '3']})
 
 
@@ -75,7 +75,7 @@ def test_multi_basic_dict():
 def test_multi_basic_dict_fail_list():
     struct = {"b": list}
     data = {"b": "THIS FAILS"}
-    with pytest.raises(TypeError):
+    with pytest.raises(LookupError):
         validate(struct, data)
 
 
@@ -88,7 +88,7 @@ def test_multi_basic_dict_fail_dict():
             "d": {"nested": 1.23,
                   "stuff": 2}
             }
-    with pytest.raises(TypeError):
+    with pytest.raises(LookupError):
         validate(struct, data)
 
 
@@ -107,14 +107,14 @@ def test_multi_basic_dict_partial():
 def test_wrong_container_list():
     struct = {"d": list}
     data = {"d": {}}
-    with pytest.raises(TypeError):
+    with pytest.raises(LookupError):
         validate(struct, data)
 
 
 def test_wrong_container_dict():
     struct = {"d": dict}
     data = {"d": list}
-    with pytest.raises(TypeError):
+    with pytest.raises(LookupError):
         validate(struct, data)
 
 
